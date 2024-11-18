@@ -1,0 +1,34 @@
+const int sensorPin = 2; // Digital pin connected to the IR sensor's OUT pin
+const int ledPin = 13;   // Digital pin connected to the LED
+
+int sensorState = 0;
+int lastSensorState = 0;
+int count = 0;
+
+void setup() {
+  pinMode(sensorPin, INPUT);
+  pinMode(ledPin, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  sensorState = digitalRead(sensorPin);
+
+  if (sensorState != lastSensorState) {
+    if (sensorState == HIGH) {
+      // Object detected, increment the count
+      count++;
+      Serial.print("Object detected. Count: ");
+      Serial.println(count);
+
+      // Turn on the LED to indicate object detection
+      digitalWrite(ledPin, LOW);
+    } else {
+      // Object removed, turn off the LED
+      digitalWrite(ledPin, HIGH);
+    }
+  }
+
+  lastSensorState = sensorState;
+  delay(100); // Adjust the delay as needed
+}
